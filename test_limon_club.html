@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тест: нужен ли вам клуб «Лимон+»?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFF9E6;
+    --bg-deep: #FFE680;
+    --ink: #1A1A1A;
+    --ink-soft: #4A4A4A;
+    --accent: #FFD60A;
+    --accent-dark: #2E7D32;
+    --card: #FFFFFF;
+    --line: #1A1A1A;
+    --shadow: 6px 6px 0px var(--ink);
+    --shadow-sm: 3px 3px 0px var(--ink);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body {
+    background-image:
+      radial-gradient(circle at 10% 10%, var(--bg-deep) 0%, transparent 40%),
+      radial-gradient(circle at 90% 90%, var(--bg-deep) 0%, transparent 35%);
+    background-attachment: fixed;
+  }
+
+  .grain {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    opacity: 0.04;
+    z-index: 1;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .container {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* HEADER */
+  .header {
+    margin-bottom: 48px;
+    text-align: center;
+  }
+
+  .lemon-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--ink);
+    color: var(--accent);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .lemon-badge::before {
+    content: '🍋';
+    font-size: 14px;
+  }
+
+  h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: clamp(32px, 6vw, 56px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+  }
+
+  h1 .accent-mark {
+    background: var(--accent);
+    padding: 0 12px;
+    display: inline-block;
+    transform: rotate(-1deg);
+    box-shadow: var(--shadow-sm);
+    border: 2px solid var(--ink);
+  }
+
+  .subtitle {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+
+  /* PROGRESS */
+  .progress-wrap {
+    margin-bottom: 32px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: var(--ink-soft);
+  }
+
+  .progress-bar {
+    height: 12px;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-right: 2px solid var(--ink);
+    border-radius: 999px;
+    width: 0%;
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* CARD */
+  .card {
+    background: var(--card);
+    border: 2.5px solid var(--ink);
+    border-radius: 24px;
+    padding: 36px 32px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+
+  .question-number {
+    position: absolute;
+    top: -16px;
+    left: 28px;
+    background: var(--ink);
+    color: var(--accent);
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 999px;
+    letter-spacing: 0.05em;
+  }
+
+  .question {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: clamp(20px, 3.5vw, 26px);
+    line-height: 1.25;
+    margin-bottom: 28px;
+    margin-top: 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .option {
+    background: var(--bg);
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 16px 20px;
+    text-align: left;
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    line-height: 1.35;
+  }
+
+  .option::before {
+    content: '';
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--card);
+    transition: all 0.18s ease;
+  }
+
+  .option:hover {
+    background: var(--accent);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .option:active {
+    transform: translate(0, 0);
+    box-shadow: none;
+  }
+
+  .option.selected {
+    background: var(--accent);
+    box-shadow: var(--shadow-sm);
+    transform: translate(-2px, -2px);
+  }
+
+  .option.selected::before {
+    background: var(--ink);
+    box-shadow: inset 0 0 0 4px var(--accent);
+  }
+
+  /* NAV */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+    gap: 16px;
+  }
+
+  .btn {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    border-radius: 12px;
+    border: 2.5px solid var(--ink);
+    cursor: pointer;
+    transition: all 0.18s ease;
+    background: var(--card);
+    color: var(--ink);
+  }
+
+  .btn:hover:not(:disabled) {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translate(0, 0);
+    box-shadow: none;
+  }
+
+  .btn-primary {
+    background: var(--ink);
+    color: var(--accent);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent);
+    color: var(--ink);
+  }
+
+  .btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  /* RESULT */
+  .result {
+    display: none;
+    animation: fadeIn 0.5s ease;
+  }
+
+  .result.active { display: block; }
+
+  .result-card {
+    background: var(--card);
+    border: 2.5px solid var(--ink);
+    border-radius: 24px;
+    padding: 44px 36px;
+    box-shadow: var(--shadow);
+    text-align: center;
+  }
+
+  .result-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    display: inline-block;
+    animation: wobble 0.8s ease;
+  }
+
+  .result-title {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 800;
+    font-size: clamp(26px, 5vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  .result-score {
+    display: inline-block;
+    background: var(--accent);
+    border: 2px solid var(--ink);
+    padding: 6px 18px;
+    border-radius: 999px;
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+
+  .result-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+    text-align: left;
+  }
+
+  .result-text strong {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .result-features {
+    list-style: none;
+    text-align: left;
+    margin-bottom: 28px;
+    background: var(--bg);
+    border: 2px solid var(--ink);
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+
+  .result-features li {
+    padding: 8px 0;
+    padding-left: 28px;
+    position: relative;
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--ink);
+  }
+
+  .result-features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    font-weight: 800;
+    color: var(--accent-dark);
+    font-size: 18px;
+  }
+
+  .result-cta {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn-large {
+    padding: 18px 32px;
+    font-size: 15px;
+  }
+
+  .btn-restart {
+    background: transparent;
+    border: none;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 8px;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+
+  .btn-restart:hover { color: var(--ink); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 13px;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+
+  .footer-author {
+    font-family: 'Unbounded', sans-serif;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-8deg) scale(1.1); }
+    75% { transform: rotate(8deg) scale(1.1); }
+  }
+
+  .question-block {
+    animation: fadeIn 0.4s ease;
+  }
+
+  @media (max-width: 540px) {
+    .container { padding: 32px 16px 60px; }
+    .card { padding: 28px 22px; }
+    .result-card { padding: 32px 22px; }
+    .nav { flex-direction: column-reverse; }
+    .nav .btn { width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<div class="container">
+
+  <header class="header">
+    <div class="lemon-badge">Тест от Ильи Радченко</div>
+    <h1>Нужен ли вам <span class="accent-mark">клуб «Лимон+»</span>?</h1>
+    <p class="subtitle">7 коротких вопросов, чтобы понять, на каком этапе в инвестициях вы находитесь и подходит ли вам формат клуба.</p>
+  </header>
+
+  <div id="quiz">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="progressLabel">Вопрос 1 из 7</span>
+        <span id="progressPercent">14%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="question-number" id="qNumber">01</div>
+      <div class="question-block">
+        <div class="question" id="questionText"></div>
+        <div class="options" id="optionsList"></div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn" id="prevBtn" disabled>← Назад</button>
+      <button class="btn btn-primary" id="nextBtn" disabled>Дальше →</button>
+    </div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="result-card">
+      <div class="result-icon" id="resultIcon">🍋</div>
+      <div class="result-score" id="resultScore">Ваш результат</div>
+      <h2 class="result-title" id="resultTitle"></h2>
+      <div class="result-text" id="resultText"></div>
+      <ul class="result-features" id="resultFeatures"></ul>
+      <div class="result-cta">
+        <button class="btn btn-primary btn-large" onclick="window.open('https://sbsite.pro/st/80ba9b4e/anketa', '_blank')">Заполнить анкету в клуб</button>
+        <button class="btn-restart" onclick="restart()">Пройти тест заново</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p>Тест составлен на основе разборов <span class="footer-author">100+ портфелей подписчиков</span></p>
+    <p style="margin-top: 6px;">Это не диагноз и не финансовая рекомендация, а ориентир.</p>
+  </footer>
+
+</div>
+
+<script>
+  const questions = [
+    {
+      q: "Есть ли у вас сейчас инвестиционный портфель?",
+      options: [
+        { text: "Нет, я только думаю начать", score: 1 },
+        { text: "Есть, но я не вкладывался в него больше полугода", score: 2 },
+        { text: "Да, активно пополняю каждый месяц", score: 3 },
+        { text: "У меня несколько счетов и я давно в рынке", score: 4 }
+      ]
+    },
+    {
+      q: "Как вы выбираете, во что вложить деньги?",
+      options: [
+        { text: "Покупаю то, что советуют в каналах или знакомые", score: 1 },
+        { text: "Читаю новости и аналитику, но часто сомневаюсь", score: 2 },
+        { text: "Есть своя стратегия, иногда нужны разборы со стороны", score: 3 },
+        { text: "Полностью разбираюсь сам, чужие советы не нужны", score: 4 }
+      ]
+    },
+    {
+      q: "Какие инструменты есть в вашем портфеле?",
+      options: [
+        { text: "Только вклад в банке или вообще ничего", score: 1 },
+        { text: "Один-два инструмента, например только акции или только облигации", score: 2 },
+        { text: "Акции, облигации, фонды, понемногу все", score: 3 },
+        { text: "Полноценная диверсификация: РФ, валюта, крипта, золото", score: 4 }
+      ]
+    },
+    {
+      q: "Что вы чувствуете, когда рынок резко падает?",
+      options: [
+        { text: "Паникую и хочется все продать", score: 1 },
+        { text: "Тревожно, не понимаю, что делать", score: 2 },
+        { text: "Спокойно, но хочется обсудить с кем-то план", score: 3 },
+        { text: "Воспринимаю как возможность докупиться", score: 4 }
+      ]
+    },
+    {
+      q: "Сколько времени в неделю вы готовы выделять на инвестиции?",
+      options: [
+        { text: "Меньше часа, нет времени разбираться самому", score: 2 },
+        { text: "1-2 часа, если есть готовая система", score: 3 },
+        { text: "3-5 часов, я погружен в тему", score: 3 },
+        { text: "Больше 5 часов, это моя ежедневная практика", score: 4 }
+      ]
+    },
+    {
+      q: "Знакомы ли вам инструменты крипты и нейротрейдинга?",
+      options: [
+        { text: "Боюсь крипты, считаю это рисковой темой", score: 1 },
+        { text: "Слышал, но не понимаю, как туда зайти безопасно", score: 2 },
+        { text: "Пробовал, но без системы", score: 2 },
+        { text: "Уже работаю с криптой и алгоритмами", score: 4 }
+      ]
+    },
+    {
+      q: "Что вам важнее всего сейчас?",
+      options: [
+        { text: "Получить готовую систему и пошаговый план", score: 2 },
+        { text: "Окружение единомышленников и совместные разборы", score: 3 },
+        { text: "Доступ к инструментам, которые сложно подключить самому", score: 3 },
+        { text: "Меня все устраивает, я просто наблюдаю", score: 4 }
+      ]
+    }
+  ];
+
+  const results = {
+    starter: {
+      icon: "🌱",
+      title: "Вы только начинаете, и это нормально",
+      score: "Уровень: новичок",
+      text: "Сейчас у вас есть главное — желание разобраться. Но без системы это превращается в хаотичные покупки по совету знакомых или каналов, и капитал растет медленно или вообще не растет. <strong>Клуб «Лимон+» был сделан как раз для таких ситуаций.</strong> Каждый месяц мы разбираем один инструмент, вы получаете готовые алгоритмы и реальные действия, а не общую теорию из учебников.",
+      features: [
+        "Пошаговый план на 12 месяцев, начинаем с нейротрейдера и крипты",
+        "Готовая стратегия диверсификации, не нужно собирать пазл самому",
+        "Поддержка участников и созвоны, чтобы не сливаться",
+        "Доступ к моим личным портфелям и логике их сборки"
+      ]
+    },
+    builder: {
+      icon: "🍋",
+      title: "Вам не хватает системы и окружения",
+      score: "Уровень: формирую капитал",
+      text: "Вы уже что-то делаете, но действия пока разрозненные. Один инструмент закрывает одну задачу, а портфель в целом не работает как единая конструкция. <strong>Это самая частая ситуация среди инвесторов, чьи портфели я разбираю.</strong> Клуб даст вам ту самую структуру, в которой каждый рубль будет на своем месте, и снимет ощущение, что вы все время что-то упускаете.",
+      features: [
+        "Разборы вашего портфеля и индивидуальные рекомендации",
+        "12 инструментов по одному в месяц, без перегруза",
+        "Окружение людей с похожими целями, обмен опытом",
+        "Совместные эфиры по новостям рынка и ключевой ставке"
+      ]
+    },
+    pro: {
+      icon: "💼",
+      title: "У вас есть база, нужны точечные усиления",
+      score: "Уровень: опытный инвестор",
+      text: "Вы давно в рынке, у вас своя стратегия, и вы умеете держать удар при просадках. Здесь клуб работает по-другому. <strong>Это не обучение, а среда.</strong> Доступ к нейроинструментам, которые сложно подключить самостоятельно, общение с инвесторами из разных отраслей и возможность услышать живой контекст изнутри сырьевого, IT или ювелирного бизнеса. Часто одна такая беседа меняет понимание целого рынка.",
+      features: [
+        "Доступ к нейротрейдеру и валютным инструментам",
+        "Закрытые эфиры с разборами свежих отчетов компаний",
+        "Книжный клуб и обсуждение трендов вроде ИИ",
+        "Среда, в которой можно задать вопрос специалисту изнутри отрасли"
+      ]
+    },
+    expert: {
+      icon: "🏆",
+      title: "Вы уверенно справляетесь сами",
+      score: "Уровень: продвинутый",
+      text: "У вас есть и опыт, и стратегия, и понимание рынка. Скорее всего, в клубе вам будет полезна не образовательная часть, а нетворкинг и доступ к закрытым инструментам. <strong>Решение здесь должно быть осознанным.</strong> Если хочется именно круга общения с другими инвесторами и обмена идеями, имеет смысл прийти. Если этого нет, продолжайте свой путь, в нем нет ничего плохого.",
+      features: [
+        "Закрытое сообщество, где можно делиться своими наблюдениями",
+        "Доступ к нейроинструментам по подписке",
+        "Возможность выступать спикером и делиться опытом",
+        "Скидки на повторное участие в потоках"
+      ]
+    }
+  };
+
+  let currentQ = 0;
+  let answers = new Array(questions.length).fill(null);
+
+  const questionText = document.getElementById('questionText');
+  const optionsList = document.getElementById('optionsList');
+  const qNumber = document.getElementById('qNumber');
+  const progressLabel = document.getElementById('progressLabel');
+  const progressPercent = document.getElementById('progressPercent');
+  const progressFill = document.getElementById('progressFill');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function renderQuestion() {
+    const q = questions[currentQ];
+    qNumber.textContent = String(currentQ + 1).padStart(2, '0');
+    questionText.textContent = q.q;
+
+    optionsList.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'option';
+      if (answers[currentQ] === i) btn.classList.add('selected');
+      btn.textContent = opt.text;
+      btn.onclick = () => selectOption(i);
+      optionsList.appendChild(btn);
+    });
+
+    const progress = ((currentQ + 1) / questions.length) * 100;
+    progressLabel.textContent = `Вопрос ${currentQ + 1} из ${questions.length}`;
+    progressPercent.textContent = `${Math.round(progress)}%`;
+    progressFill.style.width = `${progress}%`;
+
+    prevBtn.disabled = currentQ === 0;
+    nextBtn.disabled = answers[currentQ] === null;
+    nextBtn.textContent = currentQ === questions.length - 1 ? 'Увидеть результат →' : 'Дальше →';
+
+    // restart animation
+    const block = document.querySelector('.question-block');
+    block.style.animation = 'none';
+    block.offsetHeight;
+    block.style.animation = '';
+  }
+
+  function selectOption(i) {
+    answers[currentQ] = i;
+    renderQuestion();
+  }
+
+  prevBtn.onclick = () => {
+    if (currentQ > 0) {
+      currentQ--;
+      renderQuestion();
+    }
+  };
+
+  nextBtn.onclick = () => {
+    if (answers[currentQ] === null) return;
+    if (currentQ < questions.length - 1) {
+      currentQ++;
+      renderQuestion();
+    } else {
+      showResult();
+    }
+  };
+
+  function showResult() {
+    const total = answers.reduce((sum, ans, i) => sum + questions[i].options[ans].score, 0);
+    const max = questions.length * 4;
+    const percent = (total / max) * 100;
+
+    let key;
+    if (percent < 40) key = 'starter';
+    else if (percent < 65) key = 'builder';
+    else if (percent < 85) key = 'pro';
+    else key = 'expert';
+
+    const r = results[key];
+    document.getElementById('resultIcon').textContent = r.icon;
+    document.getElementById('resultTitle').textContent = r.title;
+    document.getElementById('resultScore').textContent = r.score;
+    document.getElementById('resultText').innerHTML = r.text;
+
+    const featuresEl = document.getElementById('resultFeatures');
+    featuresEl.innerHTML = '';
+    r.features.forEach(f => {
+      const li = document.createElement('li');
+      li.textContent = f;
+      featuresEl.appendChild(li);
+    });
+
+    document.getElementById('quiz').style.display = 'none';
+    document.getElementById('result').classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function restart() {
+    currentQ = 0;
+    answers = new Array(questions.length).fill(null);
+    document.getElementById('result').classList.remove('active');
+    document.getElementById('quiz').style.display = 'block';
+    renderQuestion();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  renderQuestion();
+</script>
+</body>
+</html>
